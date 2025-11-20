@@ -189,7 +189,7 @@ test_that("toJSON result is properly formatted for VariableMetadata", {
                     new("VariableSpec", variableId = 'c', entityId = 'b')
                  ))
             )
-    vmjson <- veupathUtils::toJSON(vm)
+    vmjson <- mbioUtils::toJSON(vm)
     vmlist <- jsonlite::fromJSON(vmjson)
 
     expect_equal(names(vmlist), 'variableMetadata')
@@ -214,7 +214,7 @@ test_that("toJSON result is properly formatted for VariableMetadata", {
                  dataShape = new("DataShape", value = 'BINARY'),
                  vocabulary = c('a', 'b')
             )
-    vmjson <- veupathUtils::toJSON(vm)
+    vmjson <- mbioUtils::toJSON(vm)
     vmlist <- jsonlite::fromJSON(vmjson)
 
     expect_equal(names(vmlist), 'variableMetadata')
