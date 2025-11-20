@@ -20,7 +20,7 @@ This includes their representation in R, as JSON and how they are written to fil
 
 \item{\code{ancestorIdColumns}}{A character vector of column names representing parent entities of the recordIdColumn.}
 
-\item{\code{computedVariableMetadata}}{veupathUtils::VariableMetadataList detailing the computed variables.}
+\item{\code{computedVariableMetadata}}{mbioUtils::VariableMetadataList detailing the computed variables.}
 
 \item{\code{statistics}}{An optional slot of any values. List or data.frame are recommended. It is not required to have rows or cols map to samples.}
 

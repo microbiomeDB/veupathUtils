@@ -1,30 +1,30 @@
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/microbiomeDB/veupathUtils/workflows/R-CMD-check/badge.svg)](https://github.com/microbiomeDB/veupathUtils/actions)
+  [![R-CMD-check](https://github.com/microbiomeDB/mbioUtils/workflows/R-CMD-check/badge.svg)](https://github.com/microbiomeDB/mbioUtils/actions)
   <!-- badges: end -->
 
-# veupathUtils
+# mbioUtils
 
-veupathUtils is an R package which provides helper functions for solving common problems in the MicrobiomeDB project.
+mbioUtils is an R package which provides utility functions and data structures for microbiomeDB R packages. It was forked from veupathUtils 2.6.7 and stripped of VEuPathDB-specific functionality.
 
 ## Installation
 
-Use the R package [remotes](https://cran.r-project.org/web/packages/remotes/index.html) to install veupathUtils. From the R command prompt:
+Use the R package [remotes](https://cran.r-project.org/web/packages/remotes/index.html) to install mbioUtils. From the R command prompt:
 
 ```R
-remotes::install_github('microbiomeDB/veupathUtils')
+remotes::install_github('microbiomeDB/mbioUtils')
 ```
 
 ## Usage
 This package is primarily intended for use as a dependency in other R packages. In order to establish that depedency the developer of the 
 dependent package must follow these steps:
-1. add ```veupathUtils``` to the ```Imports``` section of the dependent package's ```DESCRIPTION``` file.
+1. add ```mbioUtils``` to the ```Imports``` section of the dependent package's ```DESCRIPTION``` file.
 2. add a ```Remotes``` section to the dependent package's ```DESCRIPTION``` file.
-3. add ```microbiomeDB/veupathUtils``` to the ```Remotes``` section of the dependent package's ```DESCRIPTION``` file.
-4. add ```#' @import veupathUtils``` to the dependent package's package-level documentation file (usually called ```{mypackage}-package.R```).
+3. add ```microbiomeDB/mbioUtils``` to the ```Remotes``` section of the dependent package's ```DESCRIPTION``` file.
+4. add ```#' @import mbioUtils``` to the dependent package's package-level documentation file (usually called ```{mypackage}-package.R```).
 5. run ```devtools::document()```.
 
 The developer of the dependent package can either install this package using ```remotes``` as descripted in the "Installation" section above,
-or if they mean to also develop veupathUtils simultaneously, can use ```devtools::load_all("{path-to-veupathUtils}")``` to load this package in 
+or if they mean to also develop mbioUtils simultaneously, can use ```devtools::load_all("{path-to-mbioUtils}")``` to load this package in 
 their R session.
 
 ## Contributing
