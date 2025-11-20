@@ -23,7 +23,7 @@ check_collection <- function(object) {
     # collection data should all come from the same entity
     # using the presence of the period to indicate eda services formatted data
     if (all(grepl(".", names(df), fixed = TRUE))) {
-        if (uniqueN(veupathUtils::strSplit(names(df)[!names(df) %in% object@ancestorIdColumns], ".", ncol=2, index=1)) > 1) {
+        if (uniqueN(mbioUtils::strSplit(names(df)[!names(df) %in% object@ancestorIdColumns], ".", ncol=2, index=1)) > 1) {
             msg <- paste("All columns must belong to the same entity.")
             errors <- c(errors, msg)
         }

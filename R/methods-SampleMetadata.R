@@ -1,8 +1,8 @@
 #' @rdname getSampleMetadata
 #' @aliases getSampleMetadata,SampleMetadata-method 
 setMethod("getSampleMetadata", signature("SampleMetadata"), function(object, asCopy = c(TRUE, FALSE), includeIds = c(TRUE, FALSE)) {
-  asCopy <- veupathUtils::matchArg(asCopy)
-  includeIds <- veupathUtils::matchArg(includeIds)
+  asCopy <- mbioUtils::matchArg(asCopy)
+  includeIds <- mbioUtils::matchArg(includeIds)
   dt <- object@data
 
   # Check that incoming dt meets requirements

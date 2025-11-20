@@ -52,7 +52,7 @@ cut_width <- function(x, width, center = NULL, boundary = NULL, closed = c("righ
   x <- as.numeric(x)
   width <- as.numeric(width)
 
-  closed <- veupathUtils::matchArg(closed)
+  closed <- mbioUtils::matchArg(closed)
 
   x_range <- range(x, na.rm = TRUE, finite = TRUE)
   if (length(x_range) == 0) {
@@ -196,7 +196,7 @@ find_origin <- function(x_range, width, boundary) {
 }
 
 breaks <- function(x, method = c('equalInterval', 'quantile', 'sd'), nbins = NULL, binwidth = NULL) {
-  method <- veupathUtils::matchArg(method)
+  method <- mbioUtils::matchArg(method)
   if (method != 'sd') {
     if ((!is.null(nbins) && !is.null(binwidth)) || (is.null(nbins) && is.null(binwidth))) {
       stop("Specify exactly one of n and width for methods `equalInterval` and `quantile`.")

@@ -115,7 +115,7 @@ stripEntityIdFromColumnHeader <- function(columnNames) {
   columnsToFix <- grepl(".", columnNames, fixed=T)
 
   if (sum(columnsToFix) > 0) {
-    columnNames[columnsToFix] <- veupathUtils::strSplit(columnNames[columnsToFix], ".", index=2)
+    columnNames[columnsToFix] <- mbioUtils::strSplit(columnNames[columnsToFix], ".", index=2)
   }
 
   return(columnNames)

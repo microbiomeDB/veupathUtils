@@ -17,7 +17,7 @@ check_compute_result <- function(object) {
     # the variable classes are correct.
     if (!!length(object@computedVariableMetadata)) {
       variables <- object@computedVariableMetadata
-      col_names <- stripEntityIdFromColumnHeader(veupathUtils::findAllColNames(variables))
+      col_names <- stripEntityIdFromColumnHeader(mbioUtils::findAllColNames(variables))
 
       if (!all(col_names %in% names(object@data))) {
         msg <- paste("Some specified computed variables are not present in compute result data.frame")
@@ -64,7 +64,7 @@ check_compute_result <- function(object) {
 #' @slot name The name of the compute, ex: 'alphaDiv'.
 #' @slot recordIdColumn The name of the column containing IDs for the samples. All other columns will be treated as computed values.
 #' @slot ancestorIdColumns A character vector of column names representing parent entities of the recordIdColumn.
-#' @slot computedVariableMetadata veupathUtils::VariableMetadataList detailing the computed variables.
+#' @slot computedVariableMetadata mbioUtils::VariableMetadataList detailing the computed variables.
 #' @slot statistics An optional slot of any values. List or data.frame are recommended. It is not required to have rows or cols map to samples.
 #' @slot computationDetails An optional message about the computed results.
 #' @slot parameters A record of the input parameters used to generate the computed results.

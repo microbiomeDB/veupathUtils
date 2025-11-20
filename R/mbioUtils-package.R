@@ -1,7 +1,8 @@
 #' @keywords internal
+#' @importFrom methods new slotNames validObject
+#' @importFrom stats complete.cases median sd var
+#' @importFrom utils tail
 "_PACKAGE"
-
-#' @importFrom microbenchmark microbenchmark
 
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!

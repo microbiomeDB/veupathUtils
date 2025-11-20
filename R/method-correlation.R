@@ -31,7 +31,7 @@ function(
   predicateType = c('proportionNonZero', 'variance', 'sd'), 
   threshold = 0.5
 ) {
-  predicateType <- veupathUtils::matchArg(predicateType)
+  predicateType <- mbioUtils::matchArg(predicateType)
 
   if (predicateType == 'proportionNonZero') {
     if (threshold < 0 | threshold > 1) {
@@ -101,9 +101,9 @@ function(
   verbose = c(TRUE, FALSE)
 ) {
 
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
 
   # Check that the number of rows match.
   if (!identical(nrow(data1), nrow(data2))) {
@@ -111,17 +111,17 @@ function(
   }
 
   # Check that all values are numeric
-  if (!identical(veupathUtils::findNumericCols(data1), names(data1))) { 
+  if (!identical(mbioUtils::findNumericCols(data1), names(data1))) { 
     warning("All columns in data1 are not numeric. Only numeric columns will be used.")
-    keepCols <- veupathUtils::findNumericCols(data1)
+    keepCols <- mbioUtils::findNumericCols(data1)
     if (length(keepCols) == 0) {
       stop("No numeric columns found in data1.")
     }
     data1 <- data1[, ..keepCols]
   }
-  if (!identical(veupathUtils::findNumericCols(data2), names(data2))) { 
+  if (!identical(mbioUtils::findNumericCols(data2), names(data2))) { 
     warning("All columns in data2 are not numeric. Only numeric columns will be used.")
-    keepCols <- veupathUtils::findNumericCols(data2)
+    keepCols <- mbioUtils::findNumericCols(data2)
     if (length(keepCols) == 0) {
       stop("No numeric columns found in data2.")
     }
@@ -146,7 +146,7 @@ function(
     keep.rownames = T
   )
 
-  veupathUtils::logWithTime(paste0('Completed correlation with method=', method,'. Formatting results.'), verbose)
+  mbioUtils::logWithTime(paste0('Completed correlation with method=', method,'. Formatting results.'), verbose)
 
 
   ## Format results
@@ -184,14 +184,14 @@ function(
   verbose = c(TRUE, FALSE)
 ) {
 
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
 
   # Check that all values are numeric
-  if (!identical(veupathUtils::findNumericCols(data1), names(data1))) { 
+  if (!identical(mbioUtils::findNumericCols(data1), names(data1))) { 
     warning("All columns in data1 are not numeric. Only numeric columns will be used.")
-    keepCols <- veupathUtils::findNumericCols(data1)
+    keepCols <- mbioUtils::findNumericCols(data1)
     if (length(keepCols) == 0) {
       stop("No numeric columns found in data1.")
     }
@@ -232,7 +232,7 @@ function(
   
   }
 
-  veupathUtils::logWithTime(paste0('Completed correlation with method=', method,'. Formatting results.'), verbose)
+  mbioUtils::logWithTime(paste0('Completed correlation with method=', method,'. Formatting results.'), verbose)
 
   ## Format results
   rowAndColNames <- expand.grid(rownames(corrResult), colnames(corrResult))
@@ -270,8 +270,8 @@ buildCorrelationComputeResult <- function(
   method = c('spearman','pearson','sparcc'), 
   verbose = c(TRUE, FALSE)
 ) {
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
 
   # both AbundanceData and SampleMetadata have these slots
   recordIdColumn <- ifelse('recordIdColumn' %in% slotNames(data1), data1@recordIdColumn, NA_character_)
@@ -293,7 +293,7 @@ buildCorrelationComputeResult <- function(
   result@parameters <- paste0('method = ', method)
 
   validObject(result)
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       'Correlation computation completed with parameters recordIdColumn=', recordIdColumn, 
       ', method = ', method
@@ -339,9 +339,9 @@ function(
   verbose = c(TRUE, FALSE)
 ) {
 
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
   
   correlation(data, NULL, method = method, format = format, verbose = verbose)
 })
@@ -361,10 +361,10 @@ function(
   metadataIsFirst = c(FALSE,TRUE)
 ) {
   
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
-  metadataIsFirst <- veupathUtils::matchArg(metadataIsFirst)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
+  metadataIsFirst <- mbioUtils::matchArg(metadataIsFirst)
   
   #prefilters applied
   data1 <- pruneFeatures(data1, predicateFactory('proportionNonZero', proportionNonZeroThreshold), verbose)
@@ -390,7 +390,7 @@ function(
     )
   }
 
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       "Received df table with", 
       nrow(values), "samples and", 
@@ -425,9 +425,9 @@ function(
   stdDevThreshold = 0
 ) {
   
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
 
   #prefilters applied
   data <- pruneFeatures(data, predicateFactory('proportionNonZero', proportionNonZeroThreshold), verbose)
@@ -437,7 +437,7 @@ function(
   values <- getCollectionData(data, variableNames = NULL, ignoreImputeZero = FALSE, includeIds = FALSE, verbose = verbose)
   corrResult <- correlation(values, NULL, method = method, format = 'data.table', verbose = verbose)
 
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       "Received df table with", 
       nrow(values), "samples and", 
@@ -464,9 +464,9 @@ function(
   format = c('ComputeResult', 'data.table'), 
   verbose = c(TRUE, FALSE)
 ) {
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
   
   corrResult <- correlation(
     getSampleMetadata(data, TRUE, FALSE), 
@@ -476,7 +476,7 @@ function(
     verbose = verbose
   )
 
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       "Received df table with", 
       nrow(data), "samples and", 
@@ -508,9 +508,9 @@ function(
   stdDevThreshold = 0
 ) {
   
-  format <- veupathUtils::matchArg(format)
-  method <- veupathUtils::matchArg(method)
-  verbose <- veupathUtils::matchArg(verbose)
+  format <- mbioUtils::matchArg(format)
+  method <- mbioUtils::matchArg(method)
+  verbose <- mbioUtils::matchArg(verbose)
   
   #prefilters applied
   data1 <- pruneFeatures(data1, predicateFactory('proportionNonZero', proportionNonZeroThreshold), verbose)
@@ -523,7 +523,7 @@ function(
   values1 <- getCollectionData(data1, variableNames = NULL, ignoreImputeZero = FALSE, includeIds = TRUE, verbose = verbose)
   values2 <- getCollectionData(data2, variableNames = NULL, ignoreImputeZero = FALSE, includeIds = TRUE, verbose = verbose)
 
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       "Received first df table with", 
       nrow(values1), "samples and", 
@@ -531,7 +531,7 @@ function(
     ), 
     verbose
   )
-  veupathUtils::logWithTime(
+  mbioUtils::logWithTime(
     paste(
       "Received second df table with", 
       nrow(values2), "samples and", 
@@ -557,7 +557,7 @@ function(
   if (length(commonSamples) == 0) {
     stop('No samples in common between data1 and data2')
   } else {
-    veupathUtils::logWithTime(
+    mbioUtils::logWithTime(
       paste(
         "Found", length(commonSamples), "samples in common between data1 and data2. Only these samples will be used."
       ), 
@@ -572,7 +572,7 @@ function(
   values1 <- values1[, -..allIdColumns]
   values2 <- values2[, -..allIdColumns]  
 
-  corrResult <- veupathUtils::correlation(
+  corrResult <- mbioUtils::correlation(
     values1, 
     values2, 
     method = method, 
@@ -583,7 +583,7 @@ function(
   if (format == 'data.table') {
     return(corrResult)
   } else {
-    result <- veupathUtils::buildCorrelationComputeResult(corrResult, data1, data2, method, verbose)
+    result <- mbioUtils::buildCorrelationComputeResult(corrResult, data1, data2, method, verbose)
     result@computationDetails <- 'correlation'
     return(result)
   } 

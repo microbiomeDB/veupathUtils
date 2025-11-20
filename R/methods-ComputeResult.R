@@ -16,9 +16,9 @@ setGeneric("writeMeta",
 
 #'@export 
 setMethod("writeMeta", signature("ComputeResult"), function(object, pattern = NULL, verbose = c(TRUE, FALSE)) {
-  verbose <- veupathUtils::matchArg(verbose)
+  verbose <- mbioUtils::matchArg(verbose)
 
-  outJson <- veupathUtils::toJSON(object@computedVariableMetadata)
+  outJson <- mbioUtils::toJSON(object@computedVariableMetadata)
 
   if (is.null(pattern)) { 
     pattern <- object@name
@@ -30,7 +30,7 @@ setMethod("writeMeta", signature("ComputeResult"), function(object, pattern = NU
 
   outFileName <- basename(tempfile(pattern = pattern, tmpdir = tempdir(), fileext = ".json"))
   write(outJson, outFileName)
-  veupathUtils::logWithTime(paste('New output file written:', outFileName), verbose)
+  mbioUtils::logWithTime(paste('New output file written:', outFileName), verbose)
 
   return(outFileName)
 })
@@ -52,7 +52,7 @@ setGeneric("writeData",
 
 #'@export 
 setMethod("writeData", signature("ComputeResult"), function(object, pattern = NULL, verbose = c(TRUE, FALSE)) {
-  verbose <- veupathUtils::matchArg(verbose)
+  verbose <- mbioUtils::matchArg(verbose)
 
   if (is.null(pattern)) { 
     pattern <- object@name
@@ -64,7 +64,7 @@ setMethod("writeData", signature("ComputeResult"), function(object, pattern = NU
 
   outFileName <- basename(tempfile(pattern = pattern, tmpdir = tempdir(), fileext = ".tab"))
   data.table::fwrite(object@data, outFileName, sep = '\t', quote = FALSE)
-  veupathUtils::logWithTime(paste('New output file written:', outFileName), verbose)
+  mbioUtils::logWithTime(paste('New output file written:', outFileName), verbose)
 
   return(outFileName)
 })
@@ -90,7 +90,7 @@ setGeneric("writeStatistics",
 
 #'@export 
 setMethod("writeStatistics", signature("ComputeResult"), function(object, pattern = NULL, verbose = c(TRUE, FALSE)) {
-  verbose <- veupathUtils::matchArg(verbose)
+  verbose <- mbioUtils::matchArg(verbose)
 
   # Convert all to character but maintain structure
   if (inherits(object@statistics, 'data.frame')) {
@@ -111,7 +111,7 @@ setMethod("writeStatistics", signature("ComputeResult"), function(object, patter
 
   outFileName <- basename(tempfile(pattern = pattern, tmpdir = tempdir(), fileext = ".json"))
   write(outJson, outFileName)
-  veupathUtils::logWithTime(paste('New output file written:', outFileName), verbose)
+  mbioUtils::logWithTime(paste('New output file written:', outFileName), verbose)
 
   return(outFileName)
 })

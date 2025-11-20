@@ -80,11 +80,11 @@ clean_names <- function(names, makeUnique = FALSE) {
 ## cleanColumnNames will clean up the column names to make them valid column names in R, and hopefully improve consistncy of labels as well
 #' @export
 getDataFromSource <- function(dataSource, keepIdsAndNumbersOnly = c(TRUE, FALSE), cleanColumnNames = c(FALSE, TRUE)) {
-    keepIdsAndNumbersOnly <- veupathUtils::matchArg(keepIdsAndNumbersOnly)
-    cleanColumnNames <- veupathUtils::matchArg(cleanColumnNames)
+    keepIdsAndNumbersOnly <- mbioUtils::matchArg(keepIdsAndNumbersOnly)
+    cleanColumnNames <- mbioUtils::matchArg(cleanColumnNames)
 
     if (inherits(dataSource, "character")) {
-        veupathUtils::logWithTime(sprintf("Attempting to read file: %s", dataSource), verbose = TRUE)
+        mbioUtils::logWithTime(sprintf("Attempting to read file: %s", dataSource), verbose = TRUE)
         dt <- data.table::fread(dataSource, na.strings=c(''))
     } else if (inherits(dataSource, "data.frame")) {
         dt <- data.table::as.data.table(dataSource)        
