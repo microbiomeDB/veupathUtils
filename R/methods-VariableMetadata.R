@@ -14,18 +14,18 @@ setGeneric("merge",
 
 #'@export 
 setMethod("merge", signature("VariableMetadataList", "VariableMetadataList"), function(x,y) {
-  veupathUtils::VariableMetadataList(S4Vectors::SimpleList(c(as.list(x), as.list(y))))
+  mbioUtils::VariableMetadataList(S4Vectors::SimpleList(c(as.list(x), as.list(y))))
 })
 
 #'@export 
 setMethod("merge", signature("VariableSpecList", "VariableSpecList"), function(x,y) {
-  veupathUtils::VariableSpecList(S4Vectors::SimpleList(c(as.list(x), as.list(y))))
+  mbioUtils::VariableSpecList(S4Vectors::SimpleList(c(as.list(x), as.list(y))))
 })
 
 #' R object as JSON string
 #' 
 #' This function converts an R object to a JSON string.
-#' see `methods(veupathUtils::toJSON)` for a list of support classes.
+#' see `methods(mbioUtils::toJSON)` for a list of support classes.
 #' @param object object of a supported S4 class to convert to a JSON string representation
 #' @param named logical indicating whether the result should be a complete named JSON object or just the value of the object
 #' @return character vector of length 1 containing JSON string
@@ -40,7 +40,7 @@ setGeneric("toJSON",
 
 #' @export 
 setMethod("toJSON", signature("Bin"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     
     # possible well want to make these optional, rather than null
     start_json <- jsonlite::toJSON(jsonlite::unbox(object@binStart), na = 'null')
@@ -69,7 +69,7 @@ setMethod("toJSON", signature("Bin"), function(object, named = c(TRUE, FALSE)) {
 
 #' @export
 setMethod("toJSON", signature("BinList"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- S4SimpleListToJSON(object, named)
 
     if (named) tmp <- paste0('{"bins":', tmp, "}")
@@ -77,70 +77,13 @@ setMethod("toJSON", signature("BinList"), function(object, named = c(TRUE, FALSE
     return(tmp)
 })
 
-#' @export
-setMethod("toJSON", signature("Range"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
-
-    if (all(is.na(c(object@minimum, object@maximum)))) {
-      range_string <- NA
-    } else {
-      range_string <- paste0('(', object@minimum, ' - ', object@maximum, ')')
-    }
-    
-    range_json <- jsonlite::toJSON(jsonlite::unbox(range_string))
-
-    if (named) {
-      range_json <- paste0('{"range":', range_json, "}")  
-    }
-    
-    return(range_json)
-})
-
-#' @export
-setMethod("toJSON", signature("Statistic"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
-    
-    value_json <- jsonlite::toJSON(jsonlite::unbox(object@value), na = 'null')
-    tmp <- paste0('"value":', value_json)
-
-    ci_json <- veupathUtils::toJSON(object@confidenceInterval, FALSE)
-    tmp <- paste0(tmp, ',"confidenceInterval":', ci_json)
-
-    conf_level_json <- jsonlite::toJSON(jsonlite::unbox(object@confidenceLevel), na = 'null')
-    tmp <- paste0(tmp, ',"confidenceLevel":', conf_level_json)
-
-    pvalue_json <- jsonlite::toJSON(jsonlite::unbox(object@pvalue))
-    tmp <- paste0(tmp, ',"pvalue":', pvalue_json)
-
-    tmp <- paste0("{", tmp, "}")
-    if (named) {
-      tmp <- paste0('{"', object@name, '":', tmp, "}")  
-    }
-    
-    return(tmp)
-})
-
-#' @export
-setMethod("toJSON", signature("StatisticList"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
-    tmp <- S4SimpleListToJSON(object, TRUE)
-
-    if (named) tmp <- paste0('{"statistics":', tmp, "}")
-
-    return(tmp)
-})
-
-# these let jsonlite::toJSON work by using the veupathUtils::toJSON methods for our custom S4 classes
-asJSONGeneric <- getGeneric("asJSON", package = "jsonlite")
-setMethod(asJSONGeneric, "Statistic", function(x, ...) veupathUtils::toJSON(x, FALSE))
-setMethod(asJSONGeneric, "StatisticList", function(x, ...) veupathUtils::toJSON(x, FALSE))
 
 
 ##############################################################################################
 
 #' @export
 setMethod("toJSON", signature("VariableClass"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- jsonlite::toJSON(jsonlite::unbox(object@value))
 
     if (named) tmp <- paste0('{"variableClass":', tmp, '}')
@@ -150,7 +93,7 @@ setMethod("toJSON", signature("VariableClass"), function(object, named = c(TRUE,
 
 #' @export
 setMethod("toJSON", signature("VariableSpec"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- list("variableId" = jsonlite::unbox(object@variableId),
                 "entityId" = jsonlite::unbox(object@entityId))
 
@@ -161,7 +104,7 @@ setMethod("toJSON", signature("VariableSpec"), function(object, named = c(TRUE, 
 
 #' @export
 setMethod("toJSON", signature("PlotReference"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- jsonlite::toJSON(jsonlite::unbox(object@value))
 
     if (named) tmp <- paste0('{"plotReference":', tmp, '}')
@@ -171,7 +114,7 @@ setMethod("toJSON", signature("PlotReference"), function(object, named = c(TRUE,
 
 #' @export
 setMethod("toJSON", signature("VariableSpecList"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- S4SimpleListToJSON(object, named)
 
     if (named) tmp <- paste0('{"variableSpecs":', tmp, "}")
@@ -181,7 +124,7 @@ setMethod("toJSON", signature("VariableSpecList"), function(object, named = c(TR
 
 #' @export
 setMethod("toJSON", signature("DataType"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- jsonlite::unbox(jsonlite::unbox(tolower(object@value)))
 
     if (named) tmp <- list("dataType" = tmp)
@@ -191,7 +134,7 @@ setMethod("toJSON", signature("DataType"), function(object, named = c(TRUE, FALS
 
 #' @export
 setMethod("toJSON", signature("DataShape"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- jsonlite::unbox(jsonlite::unbox(tolower(object@value)))
 
     if (named) tmp <- list("dataShape" = tmp)
@@ -201,17 +144,17 @@ setMethod("toJSON", signature("DataShape"), function(object, named = c(TRUE, FAL
 
 #' @export
 setMethod("toJSON", signature("VariableMetadata"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named)    
+    named <- mbioUtils::matchArg(named)    
     tmp <- character()
 
-    variable_class_json <- veupathUtils::toJSON(object@variableClass, named = FALSE)
-    variable_spec_json <- veupathUtils::toJSON(object@variableSpec, named = FALSE)
+    variable_class_json <- mbioUtils::toJSON(object@variableClass, named = FALSE)
+    variable_spec_json <- mbioUtils::toJSON(object@variableSpec, named = FALSE)
     
 
     tmp <- paste0('"variableClass":', variable_class_json, ',"variableSpec":', variable_spec_json)
 
     if (!is.na(object@plotReference@value)) {
-      plot_reference_json <- veupathUtils::toJSON(object@plotReference, named = FALSE)
+      plot_reference_json <- mbioUtils::toJSON(object@plotReference, named = FALSE)
       tmp <- paste0(tmp, ',"plotReference":', plot_reference_json)
     }
 
@@ -231,12 +174,12 @@ setMethod("toJSON", signature("VariableMetadata"), function(object, named = c(TR
     }
 
     if (!is.na(object@dataType@value)) {
-      data_type_json <- veupathUtils::toJSON(object@dataType, named = FALSE)
+      data_type_json <- mbioUtils::toJSON(object@dataType, named = FALSE)
       tmp <- paste0(tmp, ',"dataType":', data_type_json)
     }
     
     if (!is.na(object@dataType@value)) {
-      data_shape_json <- veupathUtils::toJSON(object@dataShape, named = FALSE)
+      data_shape_json <- mbioUtils::toJSON(object@dataShape, named = FALSE)
       tmp <- paste0(tmp, ',"dataShape":', data_shape_json)
     }
 
@@ -249,14 +192,14 @@ setMethod("toJSON", signature("VariableMetadata"), function(object, named = c(TR
     tmp <- paste0(tmp, ',"imputeZero":', jsonlite::toJSON(jsonlite::unbox(object@imputeZero)))
     
     if (!is.na(object@weightingVariableSpec@variableId)) {
-      weighting_variable_spec_json <- veupathUtils::toJSON(object@weightingVariableSpec, named = FALSE)
+      weighting_variable_spec_json <- mbioUtils::toJSON(object@weightingVariableSpec, named = FALSE)
       tmp <- paste0(tmp, ',"weightingVariableSpec":', weighting_variable_spec_json)
     }
 
     tmp <- paste0(tmp, ',"hasStudyDependentVocabulary":', jsonlite::toJSON(jsonlite::unbox(object@hasStudyDependentVocabulary)))
 
     if (!!length(object@members)) {
-      members_json <- veupathUtils::toJSON(object@members, named = FALSE)
+      members_json <- mbioUtils::toJSON(object@members, named = FALSE)
       tmp <- paste0(tmp, ',"members":', members_json)
     }
     
@@ -268,7 +211,7 @@ setMethod("toJSON", signature("VariableMetadata"), function(object, named = c(TR
 
 #' @export
 setMethod("toJSON", signature("VariableMetadataList"), function(object, named = c(TRUE, FALSE)) {
-    named <- veupathUtils::matchArg(named) 
+    named <- mbioUtils::matchArg(named) 
     tmp <- S4SimpleListToJSON(object, FALSE)
 
     if (named) tmp <- paste0('{"variables":', tmp, "}")
@@ -316,10 +259,10 @@ setGeneric("findWeightingVariablesMetadata",
 
 #' @export
 setMethod("findWeightingVariablesMetadata", signature("VariableMetadataList"), function(variables) {
-  weightingVarSpecs <- veupathUtils::findWeightingVariableSpecs(variables)
-  weightingVarSpecsColumnNames <- unlist(lapply(weightingVarSpecs, veupathUtils::getColName))
+  weightingVarSpecs <- mbioUtils::findWeightingVariableSpecs(variables)
+  weightingVarSpecsColumnNames <- unlist(lapply(weightingVarSpecs, mbioUtils::getColName))
 
-  weightingVarIndex <- which(purrr::map(as.list(variables), function(x) {veupathUtils::getColName(x@variableSpec)}) %in% weightingVarSpecsColumnNames)
+  weightingVarIndex <- which(purrr::map(as.list(variables), function(x) {mbioUtils::getColName(x@variableSpec)}) %in% weightingVarSpecsColumnNames)
   if (!length(weightingVarIndex)) return(NULL)
 
   return(variables[weightingVarIndex])
@@ -339,7 +282,7 @@ setMethod("findWeightingVariableSpecs", signature("VariableMetadata"), function(
 #TODO should this return a VariableSpecList?
 #' @export 
 setMethod("findWeightingVariableSpecs", signature("VariableMetadataList"), function(object) {
-  return(lapply(as.list(object), veupathUtils::findWeightingVariableSpecs))
+  return(lapply(as.list(object), mbioUtils::findWeightingVariableSpecs))
 })
 
 #' EDA Variable Metadata with a Study-dependent Vocabulary
@@ -378,7 +321,7 @@ setMethod("getHasStudyDependentVocabulary", signature("VariableMetadata"), funct
 
 #' @export
 setMethod("getHasStudyDependentVocabulary", signature("VariableMetadataList"), function(object) {
-  return(lapply(as.list(object), veupathUtils::getHasStudyDependentVocabulary))
+  return(lapply(as.list(object), mbioUtils::getHasStudyDependentVocabulary))
 })
 
 #' EDA Variable Metadata which needs weighting
@@ -419,7 +362,7 @@ setGeneric("findVariableMetadataFromPlotRef",
 
 #' @export
 setMethod("findVariableMetadataFromPlotRef", signature("VariableMetadataList"), function(variables, plotRef) {
-  index <- veupathUtils::findIndexFromPlotRef(variables, plotRef)
+  index <- mbioUtils::findIndexFromPlotRef(variables, plotRef)
   if (!length(index)) return(NULL)
 
   return(variables[[index]])
@@ -454,7 +397,7 @@ setGeneric("findVariableSpecFromPlotRef",
 
 #' @export
 setMethod("findVariableSpecFromPlotRef", signature("VariableMetadataList"), function(variables, plotRef) {
-  index <- veupathUtils::findIndexFromPlotRef(variables, plotRef)
+  index <- mbioUtils::findIndexFromPlotRef(variables, plotRef)
   if (!length(index)) return(NULL)
 
   return(variables[[index]]@variableSpec)
@@ -496,11 +439,11 @@ setGeneric("findColNamesFromPlotRef",
 
 #' @export
 setMethod("findColNamesFromPlotRef", signature("VariableMetadataList"), function(variables, plotRef) {
-  colNames <- veupathUtils::findColNamesByPredicate(variables, function(x) {if (!is.na(x@plotReference@value) && x@plotReference@value == plotRef && !x@isCollection) TRUE})
+  colNames <- mbioUtils::findColNamesByPredicate(variables, function(x) {if (!is.na(x@plotReference@value) && x@plotReference@value == plotRef && !x@isCollection) TRUE})
   if (!length(colNames)) {
-    collectionVM <- veupathUtils::findCollectionVariableMetadata(variables)
+    collectionVM <- mbioUtils::findCollectionVariableMetadata(variables)
     if (!length(collectionVM)) return(NULL)
-    if (collectionVM@plotReference@value == plotRef) colNames <- unlist(lapply(as.list(collectionVM@members), veupathUtils::getColName))
+    if (collectionVM@plotReference@value == plotRef) colNames <- unlist(lapply(as.list(collectionVM@members), mbioUtils::getColName))
   }
 
   return(colNames)
@@ -520,11 +463,11 @@ setGeneric("findAllColNames",
 
 #' @export
 setMethod("findAllColNames", signature("VariableMetadataList"), function(variables) {
-  colNames <- veupathUtils::findColNamesByPredicate(variables, function(x) {if (!x@isCollection) TRUE})
+  colNames <- mbioUtils::findColNamesByPredicate(variables, function(x) {if (!x@isCollection) TRUE})
   if (!length(colNames)) {
-    collectionVM <- veupathUtils::findCollectionVariableMetadata(variables)
+    collectionVM <- mbioUtils::findCollectionVariableMetadata(variables)
     if (!length(collectionVM)) return(NULL)
-    colNames <- unlist(lapply(as.list(collectionVM@members), veupathUtils::getColName))
+    colNames <- unlist(lapply(as.list(collectionVM@members), mbioUtils::getColName))
   }
 
   return(colNames)
@@ -549,7 +492,7 @@ setMethod("findDataTypesFromPlotRef", signature("VariableMetadataList"), functio
 
   dataTypes <- purrr::map(as.list(variables), function(x) { if(!is.na(x@plotReference@value) && x@plotReference@value == plotRef) { return(x@dataType@value) } })
 
-  return(veupathUtils::toStringOrNull(unlist(dataTypes)))
+  return(mbioUtils::toStringOrNull(unlist(dataTypes)))
 })
 
 #' EDA Variable Data Shapes matching a PlotReference
@@ -571,7 +514,7 @@ setMethod("findDataShapesFromPlotRef", signature("VariableMetadataList"), functi
 
   dataShapes <- purrr::map(as.list(variables), function(x) { if(!is.na(x@plotReference@value) && x@plotReference@value == plotRef) { return(x@dataShape@value) } })
 
-  return(veupathUtils::toStringOrNull(unlist(dataShapes)))
+  return(mbioUtils::toStringOrNull(unlist(dataShapes)))
 })
 
 #' EDA Variable Column Name of a VariableSpec
@@ -600,12 +543,12 @@ setMethod("getColName", signature("VariableSpec"), function(varSpec) {
   } 
   if (entityId == '' || is.na(entityId)) return(varSpec@variableId)
 
-  return(veupathUtils::toStringOrNull(paste0(entityId, ".", varId)))
+  return(mbioUtils::toStringOrNull(paste0(entityId, ".", varId)))
 })
 
 #' @export 
 setMethod("getColName", signature("VariableSpecList"), function(varSpec) {
-  lapply(as.list(varSpec), veupathUtils::getColName)
+  lapply(as.list(varSpec), mbioUtils::getColName)
 })
 
 #' @export
@@ -628,7 +571,7 @@ setGeneric("findColNamesByPredicate",
 #' @export
 setMethod("findColNamesByPredicate", signature("VariableMetadataList"), function(variables, predicateFunction) {
   # For each variable in the variable list, return the column name if the predicate is true for that variable
-  colNames <- purrr::map(as.list(variables), function(x) {if (identical(predicateFunction(x), TRUE)) {return(veupathUtils::getColName(x@variableSpec))}})
+  colNames <- purrr::map(as.list(variables), function(x) {if (identical(predicateFunction(x), TRUE)) {return(mbioUtils::getColName(x@variableSpec))}})
   colNames <- unlist(colNames)
 
   return (colNames)
@@ -642,10 +585,10 @@ setGeneric("findVariableMetadataFromVariableSpec",
 
 #' @export
 setMethod("findVariableMetadataFromVariableSpec", signature("VariableMetadataList", "VariableSpecList"), function(variables, object) {
-  variableSpecs <- unlist(lapply(as.list(variables), veupathUtils::getVariableSpec, "Never"))
-  colNamesToMatch <- unlist(lapply(as.list(object), veupathUtils::getColName))
+  variableSpecs <- unlist(lapply(as.list(variables), mbioUtils::getVariableSpec, "Never"))
+  colNamesToMatch <- unlist(lapply(as.list(object), mbioUtils::getColName))
  
-  index <- which(purrr::map(variableSpecs, function(x) {veupathUtils::getColName(x)}) %in% colNamesToMatch)
+  index <- which(purrr::map(variableSpecs, function(x) {mbioUtils::getColName(x)}) %in% colNamesToMatch)
   
   if (!length(index)) return(NULL)
   
@@ -654,9 +597,9 @@ setMethod("findVariableMetadataFromVariableSpec", signature("VariableMetadataLis
 
 #' @export
 setMethod("findVariableMetadataFromVariableSpec", signature("VariableMetadataList", "VariableSpec"), function(variables, object) {
-  variableSpecs <- unlist(lapply(as.list(variables), veupathUtils::getVariableSpec, "Never"))
+  variableSpecs <- unlist(lapply(as.list(variables), mbioUtils::getVariableSpec, "Never"))
  
-  index <- which(purrr::map(variableSpecs, function(x) {veupathUtils::getColName(x)}) == veupathUtils::getColName(object))
+  index <- which(purrr::map(variableSpecs, function(x) {mbioUtils::getColName(x)}) == mbioUtils::getColName(object))
   if (!length(index)) return(NULL)
 
   return(variables[index])

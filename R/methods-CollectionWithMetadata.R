@@ -86,7 +86,7 @@ setMethod("getSampleMetadataIdColumns", "CollectionWithMetadata", function(objec
 #' @param includeIds boolean indicating whether we should include recordIdColumn and ancestorIdColumns
 #' @param metadataVariables The metadata variables to include in the sample metadata. If NULL, all metadata variables will be included.
 #' @return data.table of sample metadata
-#' @import veupathUtils
+#' @import mbioUtils
 #' @import data.table
 #' @rdname getSampleMetadata
 #' @export
@@ -98,8 +98,8 @@ setGeneric("getSampleMetadata",
 #' @rdname getSampleMetadata
 #' @aliases getSampleMetadata,CollectionWithMetadata-method
 setMethod("getSampleMetadata", signature("CollectionWithMetadata"), function(object, asCopy = c(TRUE, FALSE), includeIds = c(TRUE, FALSE), metadataVariables = NULL) {
-    asCopy <- veupathUtils::matchArg(asCopy)
-    includeIds <- veupathUtils::matchArg(includeIds)
+    asCopy <- mbioUtils::matchArg(asCopy)
+    includeIds <- mbioUtils::matchArg(includeIds)
 
     dt <- object@sampleMetadata@data
     allIdColumns <- getSampleMetadataIdColumns(object)
@@ -152,7 +152,7 @@ setGeneric("removeIncompleteRecords",
 #' @rdname removeIncompleteRecords
 #' @aliases removeIncompleteRecords,CollectionWithMetadata-method
 setMethod("removeIncompleteRecords", signature("CollectionWithMetadata"), function(object, colName = character(), verbose = c(TRUE, FALSE)) {
-    verbose <- veupathUtils::matchArg(verbose)
+    verbose <- mbioUtils::matchArg(verbose)
     df <- getCollectionData(object, verbose = verbose)
     sampleMetadata <- getSampleMetadata(object)
     # df may have had rows removed due to getCollectionData behavior. Subset sampleMetadata to match
@@ -160,7 +160,7 @@ setMethod("removeIncompleteRecords", signature("CollectionWithMetadata"), functi
 
     # Remove Records with NA from data and metadata
     if (any(is.na(sampleMetadata[[colName]]))) {
-        veupathUtils::logWithTime("Found NAs in specified variable. Removing these records.", verbose)
+        mbioUtils::logWithTime("Found NAs in specified variable. Removing these records.", verbose)
         recordsWithData <- which(!is.na(sampleMetadata[[colName]]))
         # Keep records with data. Recall the CollectionWithMetadata object requires records to be in the same order
         # in both the data and metadata

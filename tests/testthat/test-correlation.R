@@ -203,7 +203,7 @@ test_that("correlation returns an appropriately structured result for metadata v
   statsData <- result@statistics@statistics
   expect_s3_class(statsData, 'data.frame')
   expect_equal(names(statsData), c('data1','data2','correlationCoef','pValue'))
-  nNumericCols <- length(veupathUtils::findNumericCols(sampleMetadata@data[,2:ncol(sampleMetadata@data)]))
+  nNumericCols <- length(mbioUtils::findNumericCols(sampleMetadata@data[,2:ncol(sampleMetadata@data)]))
   expect_equal(nrow(statsData), ((nNumericCols * nNumericCols) - 3)/2) # Should be number of number of numeric vars * number of numeric vars
   expect_equal(as.character(unique(statsData$data1)), c('entity.contA', 'entity.contB'))
   expect_equal(as.character(unique(statsData$data2)), c('entity.contB', 'entity.contC'))

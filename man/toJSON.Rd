@@ -16,5 +16,5 @@ character vector of length 1 containing JSON string
 }
 \description{
 This function converts an R object to a JSON string.
-see \code{methods(veupathUtils::toJSON)} for a list of support classes.
+see \code{methods(mbioUtils::toJSON)} for a list of support classes.
 }

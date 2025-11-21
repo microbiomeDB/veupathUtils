@@ -5,7 +5,7 @@ S4SimpleListToJSON <- function(S4SimpleList, named = c(TRUE, FALSE)) {
     if (!inherits(S4SimpleList, 'SimpleList')) stop("S4SimpleListToJSON only accepts an S4Vectors::SimpleList as input.", class(S4SimpleList), "was provided.")
 
     tmp <- as.list(S4SimpleList)
-    tmp <- lapply(tmp, veupathUtils::toJSON, named)
+    tmp <- lapply(tmp, mbioUtils::toJSON, named)
     tmp <- paste(tmp, collapse = ",")
     if (tmp != "") tmp <- paste0("[", tmp, "]")
 

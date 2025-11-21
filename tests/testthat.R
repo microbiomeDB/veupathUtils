@@ -1,4 +1,4 @@
 library(testthat)
-library(veupathUtils)
+library(mbioUtils)
 
-test_check("veupathUtils")
+test_check("mbioUtils")

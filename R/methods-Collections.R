@@ -85,9 +85,9 @@ function(
     includeIds = c(TRUE, FALSE), 
     verbose = c(TRUE, FALSE)
 ) {
-    ignoreImputeZero <- veupathUtils::matchArg(ignoreImputeZero)
-    includeIds <- veupathUtils::matchArg(includeIds)
-    verbose <- veupathUtils::matchArg(verbose)
+    ignoreImputeZero <- mbioUtils::matchArg(ignoreImputeZero)
+    includeIds <- mbioUtils::matchArg(includeIds)
+    verbose <- mbioUtils::matchArg(verbose)
 
     allIdColumns <- getIdColumns(object)
     if (is.null(variableNames)) {
@@ -108,13 +108,21 @@ function(
         dt <- dt[rowSums(isNAorZero(dt.noIds)) != ncol(dt.noIds),]
         numRecordsRemoved <- nrow(dt.noIds) - nrow(dt)
         if (numRecordsRemoved > 0) {
-            veupathUtils::logWithTime(paste0("Removed ", numRecordsRemoved, " records with no data."), verbose)
+            mbioUtils::logWithTime(paste0("Removed ", numRecordsRemoved, " records with no data."), verbose)
         }
     }
 
     # Replace NA values with 0
     if (!ignoreImputeZero && object@imputeZero) {
-        veupathUtils::setNaToZero(dt)
+        # Find numeric columns and replace NAs with 0
+        # NOTE: This is a simplified inline version of veupathUtils::setNaToZero()
+        # which also supported column-specific targeting and validation.
+        # If edge cases arise, see veupathUtils/R/utils-numeric.R for the full
+        # implementation with setNaToZero(), findNumericCols(), and validateNumericCols().
+        numericCols <- names(dt)[sapply(dt, is.numeric)]
+        if (length(numericCols) > 0) {
+            data.table::setnafill(dt, fill = 0, cols = numericCols)
+        }
     }
 
     if (!includeIds) {
